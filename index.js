@@ -19,7 +19,8 @@ module.exports = function devtools(options) {
 		var composeEnhancers = composeWithDevTools({ action: action });
 
 		var store;
-		
+		var firedActionName = '';
+
 		var plugin = {
 			actions:{
 				replaceState: function(state) {
@@ -31,12 +32,21 @@ module.exports = function devtools(options) {
 					store = createStore(reducer, state, composeEnhancers());
 					// this should handle updating the hyperapp state from redux-devtools-extension
 					store.subscribe(function() {
-						actions.replaceState();
+						firedActionName = '';
+						actions.replaceState(state);
 					});
 				},
-				action: function(name, data) {
-					store.dispatch({ type: name, payload: data }); 
-					//return data; // preventing action here so redux-devtools-extension will handle state for dev
+				action: function(state, actions, data, emit) {
+					if (data.name !== 'replaceState') {
+						console.log(data);
+						firedActionName = data.name;
+					}
+					return data
+				},
+				update: function(state, actions, data, emit) {
+					if (firedActionName !== '') {
+						store.dispatch({type: firedActionName, payload: data });
+					}
 				}
 			}
 		};
