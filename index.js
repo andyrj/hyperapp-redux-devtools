@@ -23,10 +23,16 @@ module.exports = function devtools(options) {
 			composeEnhancers()
 		);
 
+		// this should handle updating the hyperapp state from redux-devtools-extension...
+		store.subscribe(function() {
+			app.state = store.getState();
+		});
+
 		var plugin = {
 			events: {
 				action: funtion (name, data) {
-					store.dispatch({ type: name, payload: data })
+					store.dispatch({ type: name, payload: data }); 
+					//return data; // preventing action here so redux-devtools-extension will handle state for dev
 				}
 			}
 		};
