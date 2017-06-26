@@ -30,7 +30,6 @@ module.exports = function devtools(options) {
 			events: {
 				loaded: function(state, actions, _, emit) {
 					store = createStore(reducer, state, composeEnhancers());
-					// this should handle updating the hyperapp state from redux-devtools-extension
 					store.subscribe(function() {
 						firedActionName = '';
 						actions.replaceState(state);
@@ -38,7 +37,6 @@ module.exports = function devtools(options) {
 				},
 				action: function(state, actions, data, emit) {
 					if (data.name !== 'replaceState') {
-						console.log(data);
 						firedActionName = data.name;
 					}
 					return data
