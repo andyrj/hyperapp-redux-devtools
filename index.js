@@ -30,7 +30,10 @@ module.exports = function devtools(options) {
 
 		var plugin = {
 			events: {
-				action: funtion (name, data) {
+				loaded: function(state, actions, _, emit) {
+
+				},
+				action: function(name, data) {
 					store.dispatch({ type: name, payload: data }); 
 					//return data; // preventing action here so redux-devtools-extension will handle state for dev
 				}
