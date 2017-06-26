@@ -23,7 +23,7 @@ module.exports = function devtools(options) {
 		var plugin = {
 			actions:{
 				replaceState: function(state) {
-					return state;	
+					return store.getState();	
 				}
 			},
 			events: {
@@ -31,7 +31,7 @@ module.exports = function devtools(options) {
 					store = createStore(reducer, state, composeEnhancers());
 					// this should handle updating the hyperapp state from redux-devtools-extension
 					store.subscribe(function() {
-						actions.replaceState(store.getState());
+						actions.replaceState();
 					});
 				},
 				action: function(name, data) {
