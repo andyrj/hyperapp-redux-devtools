@@ -42,7 +42,7 @@ module.exports = function devtools(options) {
 					return data
 				},
 				update: function(state, actions, data, emit) {
-					if (firedActionName !== '') {
+					if (firedActionName !== '' && store !== undefined) {
 						store.dispatch({type: firedActionName, payload: data });
 					}
 				}
