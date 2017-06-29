@@ -4,7 +4,8 @@
   "description": "hyperapp mixin to utilize redux-devtools-extension for time travel debugging capabilities",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier --write \"./*.js\""
   },
   "repository": {
     "type": "git",
@@ -29,5 +30,8 @@
   "dependencies": {
     "redux": "^3.7.1",
     "redux-devtools-extension": "^2.13.2"
+  },
+  "devDependencies": {
+    "prettier": "^1.5.2"
   }
 }

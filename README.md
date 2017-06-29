@@ -6,19 +6,19 @@ import { h, app } from 'hyperapp';
 import devtools from 'hyperapp-redux-devtools';
 
 app({
-	state: { count: 0},
-	view: (state, actions) => {
-		return (
-			<div>
-				<button onclick={actions.increment}>Click</button>
-				<span>{state.count}</span>
-			</div>
-		);
-	},
-	actions: {
-		increment: (state) => Object.assign({}, state, { count: state.count + 1 })
-	},
-	mixins: [devtools()]
+  state: { count: 0},
+  view: (state, actions) => {
+    return (
+      <div>
+        <button onclick={actions.increment}>Click</button>
+        <span>{state.count}</span>
+      </div>
+    );
+  },
+  actions: {
+    increment: (state) => Object.assign({}, state, { count: state.count + 1 })
+  },
+  mixins: [devtools()]
 });
 
 ```
