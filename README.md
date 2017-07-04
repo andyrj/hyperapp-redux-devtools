@@ -1,6 +1,8 @@
 # hyperapp-redux-devtools
 hyperapp mixin to utilize redux-devtools-extension from hyperapp
 
+* NOTE: requires hyperapp >= 0.9.3
+
 ```js
 import { h, app } from 'hyperapp';
 import devtools from 'hyperapp-redux-devtools';
