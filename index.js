@@ -28,7 +28,7 @@ module.exports = function devtools(options) {
         }
       },
       events: {
-        loaded: function(state, actions, _, emit) {
+        ready: function(state, actions) {
           store = createStore(reducer, state, composeEnhancers());
           store.subscribe(function() {
             firedActionName = "";
