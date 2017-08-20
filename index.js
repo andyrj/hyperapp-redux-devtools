@@ -19,7 +19,7 @@ module.exports = function devtools(options) {
     var composeEnhancers = composeWithDevTools({ action: action });
 
     var store;
-    var firedActionName = "";
+    var firedActions = [];
 
     var plugin = {
       actions: {
@@ -37,13 +37,13 @@ module.exports = function devtools(options) {
         },
         action: function(state, actions, data, emit) {
           if (data.name !== "replaceState") {
-            firedActionName = data.name;
+            firedActions.push(data.name);
           }
           return data;
         },
         update: function(state, actions, data, emit) {
-          if (firedActionName !== "" && store !== undefined) {
-            store.dispatch({ type: firedActionName, payload: data });
+          if (firedActions.length > 0 && store !== undefined) {
+            store.dispatch({ type: firedActions.pop(), payload: data });
           }
         }
       }
