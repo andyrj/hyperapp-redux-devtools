@@ -31,7 +31,6 @@ module.exports = function devtools(options) {
         load: function(state, actions) {
           store = createStore(reducer, state, composeEnhancers());
           store.subscribe(function() {
-            firedActionName = "";
             actions.replaceState(state);
           });
         },
