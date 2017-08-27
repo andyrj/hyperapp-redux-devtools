@@ -40,6 +40,17 @@ module.exports = function devtools(options) {
           }
           return data;
         },
+        resolve(state, actions, result) {
+          if (typeof result === "function") {
+            const action = firedActions.pop()
+            return update => {
+              result(updateResult => {
+                firedActions.push(action)
+                update(updateResult)
+              })
+            }
+          }
+        },
         update: function(state, actions, data, emit) {
           if (firedActions.length > 0 && store !== undefined) {
             store.dispatch({ type: firedActions.pop(), payload: data });
