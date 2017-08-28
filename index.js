@@ -21,24 +21,23 @@ module.exports = function devtools(options) {
     var store;
     var firedActions = [];
 
-    var plugin = {
+    var mixin = {
       actions: {
         replaceState: function(state) {
           return store.getState();
         }
       },
       events: {
-        load: function(state, actions) {
+        load: function(state, actions, root) {
           store = createStore(reducer, state, composeEnhancers());
           store.subscribe(function() {
             actions.replaceState(state);
           });
         },
-        action: function(state, actions, data, emit) {
-          if (data.name !== "replaceState") {
-            firedActions.push(data.name);
+        action: function(state, actions, info) {
+          if (info.name !== "replaceState") {
+            firedActions.push(info.name);
           }
-          return data;
         },
         resolve(state, actions, result) {
           if (typeof result === "function") {
@@ -50,15 +49,20 @@ module.exports = function devtools(options) {
               })
             }
           }
+          return result;
         },
-        update: function(state, actions, data, emit) {
+        update: function(state, actions, data) {
           if (firedActions.length > 0 && store !== undefined) {
-            store.dispatch({ type: firedActions.pop(), payload: data });
+            var action = firedActions.pop();
+            if (action !== "replaceState") {
+              store.dispatch({ type: action, payload: data });
+            }
           }
+          return data;
         }
       }
     };
 
-    return plugin;
+    return mixin;
   };
 };
