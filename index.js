@@ -47,7 +47,7 @@ module.exports = function devtools(props) {
                 })
               }
             }
-            return result;
+            // return result; // not sure how to return result here and also handle update hook
             return function(data) {
               // equivalent to events.update
               return data;
