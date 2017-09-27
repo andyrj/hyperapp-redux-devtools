@@ -47,9 +47,15 @@ module.exports = function devtools(props) {
                 })
               }
             }
-            // return result; // not sure how to return result here and also handle update hook
+            // return result; // not sure how to return result here and also handle update hook, maybe not needed...?
             return function(data) {
               // equivalent to events.update
+              if (firedActions.length > 0 && store !== undefined) {
+                var action = firedActions.pop();
+                if (action !== "replaceState") {
+                  store.dispatch({ type: action, payload: data });
+                }
+              }
               return data;
             }
           }
