@@ -1,9 +1,7 @@
 var { createStore } = require("redux");
 var { composeWithDevTools } = require("redux-devtools-extension");
 
-module.exports = function devtools(options) {
-  if (!options) options = {};
-
+module.exports = function devtools(props) {
   function reducer(state = {}, action) {
     return Object.assign({}, state, action.payload);
   }
@@ -14,32 +12,71 @@ module.exports = function devtools(options) {
       payload: data
     };
   }
+  
+  var composeEnhancers = composeWithDevTools({ action: action });
+  
+  var store;
+  var firedActions = [];
 
-  return function(app) {
-    var composeEnhancers = composeWithDevTools({ action: action });
-
-    var store;
-    var firedActions = [];
-
-    var mixin = {
-      actions: {
-        replaceState: function(state) {
-          return store.getState();
-        }
-      },
-      events: {
-        load: function(state, actions, root) {
-          store = createStore(reducer, state, composeEnhancers());
-          store.subscribe(function() {
-            actions.replaceState(store.getState());
-          });
-        },
-        action: function(state, actions, info) {
+  var devtoolsProps = {
+    actions: {
+      replaceState: function(state) {
+        return store.getState();
+      }
+    },
+    hooks: [
+      function (state, actions) {
+        // equivalent to events.load...
+        store = createStore(reducer, state, composeEnhancers());
+        store.subscribe(function() {
+          actions.replaceState(store.getState());
+        });
+        return function(name, data) {
+          // equivalent to events.actions
           if (info.name !== "replaceState") {
             firedActions.push(info.name);
           }
+          return function(result) {
+            //equivalent to events.resolve...
+            if (typeof result === "function") {
+              const action = firedActions.pop()
+              return update => {
+                result(updateResult => {
+                  firedActions.push(action)
+                  update(updateResult)
+                })
+              }
+            }
+            return result;
+            return function(data) {
+              // equivalent to events.update
+              return data;
+            }
+          }
+        }
+      }
+    ]
+  };
+
+  return Object.assign(props, {
+    actions: devtoolsProps.actions,
+    hooks: props.hooks.concat(dvtoolsProps.hooks)
+  });
+  /*
+  return function(app) {
+    var mixin = {
+      actions: {
+        
+      },
+      events: {
+        load: function(state, actions, root) {
+          
+        },
+        action: function(state, actions, info) {
+          
         },
         resolve(state, actions, result) {
+          // how to re-write this...
           if (typeof result === "function") {
             const action = firedActions.pop()
             return update => {
@@ -65,4 +102,5 @@ module.exports = function devtools(options) {
 
     return mixin;
   };
+  */
 };
