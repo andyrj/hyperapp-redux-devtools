@@ -31,7 +31,7 @@ module.exports = function devtools(options) {
         load: function(state, actions, root) {
           store = createStore(reducer, state, composeEnhancers());
           store.subscribe(function() {
-            actions.replaceState(state);
+            actions.replaceState(store.getState());
           });
         },
         action: function(state, actions, info) {
