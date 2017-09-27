@@ -66,7 +66,7 @@ module.exports = function devtools(props) {
 
   return Object.assign(props, {
     actions: devtoolsProps.actions,
-    hooks: props.hooks.concat(dvtoolsProps.hooks)
+    hooks: props.hooks.concat(devtoolsProps.hooks)
   });
   /*
   return function(app) {
