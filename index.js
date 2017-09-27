@@ -31,7 +31,7 @@ module.exports = function devtools(props) {
         store.subscribe(function() {
           actions.replaceState(store.getState());
         });
-        return function(name, data) {
+        return function(info) {
           // equivalent to events.actions
           if (info.name !== "replaceState") {
             firedActions.push(info.name);
