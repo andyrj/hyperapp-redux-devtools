@@ -14,10 +14,8 @@ module.exports = function devtools(props) {
   }
   
   var composeEnhancers = composeWithDevTools({ action: action });
-  
   var store;
-  var firedActions = [];
-
+  
   var devtoolsProps = {
     actions: {
       replaceState: function(state) {
@@ -32,29 +30,12 @@ module.exports = function devtools(props) {
           actions.replaceState(store.getState());
         });
         return function(info) {
-          // equivalent to events.actions
-          if (info.name !== "replaceState") {
-            firedActions.push(info.name);
-          }
-          return function(result) {
-            //equivalent to events.resolve...
-            if (typeof result === "function") {
-              const action = firedActions.pop()
-              return update => {
-                result(updateResult => {
-                  firedActions.push(action)
-                  update(updateResult)
-                })
-              }
-            }
-            // return result; // not sure how to return result here and also handle update hook, maybe not needed...?
+          return function() {
             return function(data) {
               // equivalent to events.update
-              if (firedActions.length > 0 && store !== undefined) {
-                var action = firedActions.pop();
-                if (action !== "replaceState") {
-                  store.dispatch({ type: action, payload: data });
-                }
+              var action = info.name;
+              if (store !== undefined && action !== "replaceState") {
+                store.dispatch({ type: action, payload: data });
               }
               return data;
             }
@@ -68,45 +49,4 @@ module.exports = function devtools(props) {
     actions: devtoolsProps.actions,
     hooks: props.hooks.concat(devtoolsProps.hooks)
   });
-  /*
-  return function(app) {
-    var mixin = {
-      actions: {
-        
-      },
-      events: {
-        load: function(state, actions, root) {
-          
-        },
-        action: function(state, actions, info) {
-          
-        },
-        resolve(state, actions, result) {
-          // how to re-write this...
-          if (typeof result === "function") {
-            const action = firedActions.pop()
-            return update => {
-              result(updateResult => {
-                firedActions.push(action)
-                update(updateResult)
-              })
-            }
-          }
-          return result;
-        },
-        update: function(state, actions, data) {
-          if (firedActions.length > 0 && store !== undefined) {
-            var action = firedActions.pop();
-            if (action !== "replaceState") {
-              store.dispatch({ type: action, payload: data });
-            }
-          }
-          return data;
-        }
-      }
-    };
-
-    return mixin;
-  };
-  */
 };
