@@ -26,7 +26,7 @@ module.export = function devtools(app) {
         store.dispatch(action(key, result));
         inAction = false;
         return result;
-      }
+      };
     });
     actions.replaceState = () => (state, actions) => {
       return store.getState();
@@ -38,5 +38,5 @@ module.export = function devtools(app) {
       }
     });
     return app(state, actions, view, container);
-  }
+  };
 };

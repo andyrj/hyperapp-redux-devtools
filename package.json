@@ -33,5 +33,8 @@
   },
   "devDependencies": {
     "prettier": "^1.9.2"
+  },
+  "peerDependencies": {
+    "hyperapp": "^1.0.1"
   }
 }
