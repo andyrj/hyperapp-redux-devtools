@@ -18,16 +18,22 @@ module.export = function devtools(app) {
   var inAction = false;
 
   return function(state, actions, view, container) {
+    var appActions;
     Object.keys(actions || {}).forEach(function (key) {
-      var action = actions[key];
+      var act = actions[key];
       actions[key] = function() {
         inAction = true;
-        var result = action.apply(this, arguments);
+        var result = act.apply(this, arguments)(appActions.getState(), actions);
         store.dispatch(action(key, result));
         inAction = false;
         return result;
       };
     });
+    actions.getState = function() {
+      return function(state) {
+        return state;
+      }
+    };
     actions.replaceState = function() {
       return function (state, actions) {
         return store.getState();
@@ -39,6 +45,7 @@ module.export = function devtools(app) {
         actions.replaceState(store.getState());
       }
     });
-    return app(state, actions, view, container);
+    appActions = app(state, actions, view, container);
+    return appActions;
   };
 };
