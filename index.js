@@ -24,8 +24,8 @@ module.export = function devtools(app) {
         inAction = true;
         const result = action.apply(this, arguments);
         store.dispatch(action(key, result));
-        inAction = false;;
-        return result
+        inAction = false;
+        return result;
       }
     });
     actions.replaceState = () => (state, actions) => {
