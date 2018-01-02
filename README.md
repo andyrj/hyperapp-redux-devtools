@@ -17,7 +17,8 @@ devtools(app)(
         <span>{state.count}</span>
       </div>
     );
-  }
+  },
+  document.body
 );
 
 ```
