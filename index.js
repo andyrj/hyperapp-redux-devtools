@@ -32,11 +32,11 @@ module.export = function devtools(app) {
       return store.getState();
     };
     store = createStore(reducer, state, composeEnhancers());
-        store.subscribe(function() {
-          if (!inAction) {
-            actions.replaceState(store.getState());
-          }
-        });
+    store.subscribe(function() {
+      if (!inAction) {
+        actions.replaceState(store.getState());
+      }
+    });
     return app(state, actions, view, container);
   }
 };
