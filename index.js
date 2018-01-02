@@ -18,18 +18,20 @@ module.export = function devtools(app) {
   var inAction = false;
 
   return function(state, actions, view, container) {
-    Object.keys(actions || {}).forEach(key => {
-      const action = actions[key];
-      actions[key] = () => {
+    Object.keys(actions || {}).forEach(function (key) {
+      var action = actions[key];
+      actions[key] = function() {
         inAction = true;
-        const result = action.apply(this, arguments);
+        var result = action.apply(this, arguments);
         store.dispatch(action(key, result));
         inAction = false;
         return result;
       };
     });
-    actions.replaceState = () => (state, actions) => {
-      return store.getState();
+    actions.replaceState = function() {
+      return function (state, actions) {
+        return store.getState();
+      }
     };
     store = createStore(reducer, state, composeEnhancers());
     store.subscribe(function() {
