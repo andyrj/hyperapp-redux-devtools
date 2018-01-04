@@ -12,7 +12,7 @@ function action(name, data) {
   };
 }
 
-module.export = function devtools(app) {
+module.exports = function devtools(app) {
   var composeEnhancers = composeWithDevTools({ action: action });
   var store;
   var inAction = false;
