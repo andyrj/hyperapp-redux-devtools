@@ -22,30 +22,29 @@ module.exports = function devtools(app) {
     Object.keys(actions || {}).forEach(function (key) {
       var act = actions[key];
       actions[key] = function() {
-        inAction = true;
-        var result = act.apply(this, arguments)(appActions.getState(), actions);
-        store.dispatch(action(key, result));
-        inAction = false;
-        return result;
+        var reducer = act.apply(this, arguments);
+        return function (state) {
+          var newState = reducer(state, actions);
+          inAction = true;
+          store.dispatch(action(key, newState));
+          inAction = false;
+          return newState;
+        };
       };
     });
-    actions.getState = function() {
-      return function(state) {
-        return state;
-      }
-    };
-    actions.replaceState = function() {
-      return function (state, actions) {
-        return store.getState();
+    actions.replaceState = function(actualState) {
+      return function (state) {
+        return actualState;
       }
     };
     store = createStore(reducer, state, composeEnhancers());
     store.subscribe(function() {
       if (!inAction) {
-        actions.replaceState(store.getState());
+        appActions.replaceState(store.getState());
       }
     });
     appActions = app(state, actions, view, container);
     return appActions;
   };
 };
+
