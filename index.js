@@ -24,7 +24,7 @@ module.exports = function devtools(app) {
       actions[key] = function() {
         var reducer = act.apply(this, arguments);
         return function (state) {
-          var newState = reducer(state, actions);
+          var newState = reducer(state, appActions);
           inAction = true;
           store.dispatch(action(key, newState));
           inAction = false;
