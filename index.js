@@ -15,7 +15,6 @@ function action(name, data) {
 module.exports = function devtools(app) {
   var composeEnhancers = composeWithDevTools({ action: action });
   var store;
-  var inAction = false;
 
   return function(state, actions, view, container) {
     var appActions;
@@ -24,10 +23,8 @@ module.exports = function devtools(app) {
       actions[key] = function() {
         var reducer = act.apply(this, arguments);
         return function (state) {
-          var newState = reducer(state, appActions);
-          inAction = true;
+          var newState = typeof reducer === "function" ? reducer(state, appActions) : reducer;
           store.dispatch(action(key, newState));
-          inAction = false;
           return newState;
         };
       };
@@ -39,9 +36,7 @@ module.exports = function devtools(app) {
     };
     store = createStore(reducer, state, composeEnhancers());
     store.subscribe(function() {
-      if (!inAction) {
-        appActions.replaceState(store.getState());
-      }
+      appActions.replaceState(store.getState());
     });
     appActions = app(state, actions, view, container);
     return appActions;
