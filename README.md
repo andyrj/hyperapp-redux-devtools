@@ -48,8 +48,8 @@ if (process.env.NODE_ENV !== 'production') {
 ```js
 import { h, app } from 'hyperapp';
 const devtools = process.env.NODE_ENV !== 'production'
-  ? false
-  : require('hyperapp-redux-devtools');
+  ? require('hyperapp-redux-devtools')
+  : null;
 
 let main;
 
