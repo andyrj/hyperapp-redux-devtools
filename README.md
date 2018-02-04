@@ -1,5 +1,5 @@
 # hyperapp-redux-devtools
-hyperapp HOA(higher order app) to utilize redux-devtools-extension from hyperapp
+hyperapp HOA (higher order app) to utilize redux-devtools-extension from hyperapp
 
 ```js
 import { h, app } from 'hyperapp';
@@ -20,5 +20,42 @@ devtools(app)(
   },
   document.body
 );
+```
 
+### Dev vs. Prod
+
+When deploying a Hyperapp with this HOA, it is advised you don't ship the devtools bundle with it:
+
+#### With Webpack Dynamic Import
+
+```js
+import { h, app } from 'hyperapp';
+
+let main;
+
+if (process.env.NODE_ENV !== 'production') {
+  import('hyperapp-redux-devtools')
+    .then((devtools) => {
+      main = devtools(app)(...);
+    });
+} else {
+  main = app(...);
+}
+```
+
+#### With Conditional Require (Rollup/Gulp/etc..)
+
+```js
+import { h, app } from 'hyperapp';
+const devtools = process.env.NODE_ENV !== 'production'
+  ? false
+  : require('hyperapp-redux-devtools');
+
+let main;
+
+if (devtools) {
+  main = devtools(app)(...);
+} else {
+  main = app(...);
+}
 ```
