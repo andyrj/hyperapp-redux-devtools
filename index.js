@@ -42,7 +42,7 @@ module.exports = function devtools(app) {
             actions[key] = function() {
               var reducer = action.apply(this, arguments);
               return function (slice) {
-                var data = typeof reducer === "function" ? reducer(slice, appActions) : reducer;
+                var data = typeof reducer === "function" ? reducer(slice, appActions[key]) : reducer;
                 if (data && !data.then) {
                   state = set(path, copy(slice, data), state, {});
                   store.dispatch(reducAction(key, state));
