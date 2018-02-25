@@ -1,6 +1,6 @@
 {
   "name": "hyperapp-redux-devtools",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "hyperapp HOA to utilize redux-devtools-extension for time travel debugging capabilities",
   "main": "index.js",
   "scripts": {
