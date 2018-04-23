@@ -35,8 +35,8 @@ function get(path, source) {
   return source;
 }
 
-module.exports = function devtools(app) {
-  var composeEnhancers = composeWithDevTools({ action: reducAction });
+module.exports = function devtools(app, options) {
+  var composeEnhancers = composeWithDevTools({ ...options, action: reducAction });
   var store;
 
   return function(state, actions, view, container) {
