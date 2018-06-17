@@ -1,6 +1,6 @@
 {
-  "name": "hyperapp-redux-devtools",
-  "version": "1.1.6",
+  "name": "@deomitrus/hyperapp-redux-devtools",
+  "version": "1.2.0",
   "description": "hyperapp HOA to utilize redux-devtools-extension for time travel debugging capabilities",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andyrj/hyperapp-redux-devtools.git"
+    "url": "git+https://github.com/breja/hyperapp-redux-devtools.git"
   },
   "keywords": [
     "hyperapp",
@@ -21,12 +21,12 @@
     "travel",
     "debugging"
   ],
-  "author": "Andy Johnson <andyrjohnson82@gmail.com>",
+  "author": "Breja",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andyrj/hyperapp-redux-devtools/issues"
+    "url": "https://github.com/breja/hyperapp-redux-devtools/issues"
   },
-  "homepage": "https://github.com/andyrj/hyperapp-redux-devtools#readme",
+  "homepage": "https://github.com/breja/hyperapp-redux-devtools#readme",
   "dependencies": {
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2"
